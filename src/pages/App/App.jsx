@@ -1,42 +1,31 @@
-import './App.css';
-import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom'
+import { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { getUser } from '../../utilities/users-service';
 import AuthPage from '../AuthPage/AuthPage';
 import NewOrderPage from '../NewOrderPage/NewOrderPage';
 import OrderHistoryPage from '../OrderHistoryPage/OrderHistoryPage';
 import NavBar from '../../components/NavBar/NavBar';
+import './App.css';
 
 function App() {
-  // I'm intentionally leaving this empty (null)
-  const [user, setUser] = useState(null)
-  //const [user, setUser] = useState('Owen')
+  const [user, setUser] = useState(getUser());
 
-  console.log(user)
   return (
-    <div className='App'>
-      {user ? (
+    <main className="App">
+      { user ?
         <>
-          <NavBar />
+          <NavBar user={user} setUser={setUser} />
           <Routes>
-            {/* if the url matches the path given for a specific Route, render the element at that Route */}
-            <Route
-              path='/owen'
-              element={
-                <div>
-                  <h2>Owen was here</h2>
-                  <button>Click me!</button>
-                </div>
-              }
-            />
-            <Route path='/orders/new' element={<NewOrderPage />} />
-            <Route path='/orders' element={<OrderHistoryPage />} />
+            {/* Route components in here */}
+            <Route path="/orders/new" element={<NewOrderPage />} />
+            <Route path="/orders" element={<OrderHistoryPage />} />
           </Routes>
         </>
-      ) : (
-        <AuthPage />
-      )}
-    </div>
-  )
+        :
+        <AuthPage setUser={setUser} />
+      }
+    </main>
+  );
 }
 
 export default App;
